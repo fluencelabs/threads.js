@@ -6,12 +6,11 @@ env:
   THREADS_WORKER_INIT_TIMEOUT: 15000
 
 jobs:
-  # Building threads library from source
-  Build:
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+  # Testing the built files
+  Test:
+    needs: Build
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
         node_version: [ '18', '20' ]
     steps:
@@ -29,51 +28,11 @@ jobs:
           NODE_OPTIONS: --openssl-legacy-provider
         run: npm run test:tooling
 
-      - name: Upload artifacts
-        if: contains(matrix.os, 'ubuntu')
-        uses: actions/upload-artifact@v2
-        with:
-          path: |
-            ./bundle
-            ./dist
-            ./dist-esm
-            ./test-tooling/webpack/dist
+      - name: test library
+        run: npm run test:library
 
-  # Testing the built files
-  Test:
-    needs: Build
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node_version: [ '18', '20' ]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node }}
+      - name: test puppeteer
+        run: npm run test:puppeteer:basic
 
-      - name: install dependencies
-        run: npm install --ignore-scripts
-
-      - name: Download articats
-        uses: actions/download-artifact@v2
-
-      - name: Place built files
-        shell: bash
-        run: |
-          mkdir dist && mv artifact/dist/* ./dist
-          mkdir dist-esm && mv artifact/dist-esm/* ./dist-esm
-          mkdir bundle && mv artifact/bundle/* ./bundle
-          mkdir -p test-tooling/webpack/dist/ && mv artifact/test-tooling/webpack/dist/* ./test-tooling/webpack/dist/
-
-      - name: run the tests
-        run: npm run test:library && npm run test:puppeteer:basic && npm run test:puppeteer:webpack
-
-  Skip:
-    if: contains(github.event.head_commit.message, '[skip ci]')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Skip CI 🚫
-        run: echo skip ci
+      - name: test puppeteer webpack
+        run: npm run test:puppeteer:webpack
