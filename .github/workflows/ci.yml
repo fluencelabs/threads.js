@@ -8,7 +8,6 @@ env:
 jobs:
   # Testing the built files
   Test:
-    needs: Build
     runs-on: ubuntu-latest
     strategy:
       matrix:
