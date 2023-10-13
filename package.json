@@ -131,10 +131,7 @@
     "./dist/worker/implementation.worker_threads.js": false
   },
   "files": [
-    "dist/**",
-    "*.js",
-    "*.mjs",
-    "*.ts"
+    "dist"
   ]
 }
 
