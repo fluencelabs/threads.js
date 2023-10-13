@@ -1,18 +1,15 @@
 {
+  "type": "module",
   "name": "threads",
   "version": "1.7.0",
   "description": "Web workers & worker threads as simple as a function call",
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist-esm/index.js",
   "scripts": {
-    "clean": "rimraf dist/ dist-esm/",
+    "clean": "rimraf dist/",
     "dev": "npm run clean && tsc -p tsconfig.json --watch",
-    "build": "npm run clean && npm run build:cjs && npm run build:es",
-    "build:cjs": "tsc -p tsconfig.json",
-    "build:es": "tsc -p tsconfig-esm.json",
-    "postbuild": "find dist-esm | sed -e \"s/[^-][^\\/]*\\//  |/g\" -e \"s/|\\([^ ]\\)/|-\\1/\" && npm run bundle",
-    "bundle": "rollup -c -f umd --file=bundle/worker.js --name=threads --silent -- dist-esm/worker/bundle-entry.js",
+    "build": "npm run clean && tsc -p tsconfig.json",
+    "postbuild": "npm run bundle",
+    "bundle": "rollup -c -f umd --file=bundle/worker.js --name=threads --silent -- dist/worker/bundle-entry.js",
     "test": "npm run test:library && npm run test:tooling && npm run test:puppeteer:basic && npm run test:puppeteer:webpack",
     "test:library": "cross-env TS_NODE_FILES=true ava ./test/**/*.test.ts",
     "test:tooling": "cross-env TS_NODE_FILES=true ava ./test-tooling/**/*.test.ts",
@@ -131,16 +128,10 @@
     "./dist/master/implementation.node.js": false,
     "./dist/worker/implementation.js": "./dist/worker/implementation.browser.js",
     "./dist/worker/implementation.tiny-worker.js": false,
-    "./dist/worker/implementation.worker_threads.js": false,
-    "./dist-esm/master/implementation.js": "./dist-esm/master/implementation.browser.js",
-    "./dist-esm/master/implementation.node.js": false,
-    "./dist-esm/worker/implementation.js": "./dist-esm/worker/implementation.browser.js",
-    "./dist-esm/worker/implementation.tiny-worker.js": false,
-    "./dist-esm/worker/implementation.worker_threads.js": false
+    "./dist/worker/implementation.worker_threads.js": false
   },
   "files": [
     "dist/**",
-    "dist-esm/**",
     "*.js",
     "*.mjs",
     "*.ts"
