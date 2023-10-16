@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "threads",
   "version": "1.7.0",
   "description": "Web workers & worker threads as simple as a function call",
@@ -18,26 +17,27 @@
     "posttest": "tslint --project .",
     "prepare": "npm run build"
   },
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "import": "./dist/index.js"
     },
     "./observable": {
       "types": "./dist/observable.d.ts",
-      "default": "./dist/observable.js"
+      "import": "./dist/observable.js"
     },
     "./register": {
       "types": "./dist/master/register.d.ts",
-      "default": "./dist/master/register.js"
+      "import": "./dist/master/register.js"
     },
     "./master": {
       "types": "./dist/master/index.d.ts",
-      "default": "./dist/master/index.js"
+      "import": "./dist/master/index.js"
     },
     "./worker": {
       "types": "./dist/worker/index.d.ts",
-      "default": "./dist/worker/index.js"
+      "import": "./dist/worker/index.js"
     }
   },
   "sideEffects": [

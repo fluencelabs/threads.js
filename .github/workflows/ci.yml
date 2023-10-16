@@ -1,6 +1,9 @@
 name: ci
 on:
   pull_request:
+  push:
+    branches:
+      - main
 
 env:
   THREADS_WORKER_INIT_TIMEOUT: 15000
