@@ -1,4 +1,4 @@
-import { spawn, Thread, Worker } from "../../"
+import { spawn, Thread, Worker } from "../../dist/master"
 
 async function run() {
   const add = await spawn(new Worker("./worker.js"))
